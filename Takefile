@@ -1,0 +1,74 @@
+module.exports = (take) => {
+  take.options.shell.printStdout = true;
+  take.options.shell.printStderr = true;
+
+  const paths = {
+    dist: 'src/dist',
+    server: 'src/server',
+    serverDist: 'src/server/dist'
+  };
+  const opts = {
+    server: {
+      spawn: {
+        cwd: paths.server
+      }
+    }
+  };
+
+  return {
+    '': {
+      desc: 'Builds project',
+      deps: [
+        'restore',
+        'lint',
+        'build'
+      ]
+    },
+    'build': {
+      deps: [
+        'server'
+      ],
+      parallelDeps: true,
+      children: {
+        'server': {
+          async execute() {
+            await take.shell('yarn tsc -p .', opts.server);
+            await take.exec(`cp -f ${paths.server}/package.json ${paths.server}/yarn.lock ${paths.serverDist}`);
+            await take.shell('yarn --prod', {
+              spawn: {
+                cwd: paths.serverDist
+              }
+            });
+          }
+        }
+      },
+      async execute() {
+        await take.exec('mkdir -p', paths.dist);
+        await take.exec('cp -rf', `${paths.serverDist}/`, paths.dist);
+        take.log('Merged dists');
+      }
+    },
+    'restore': {
+      desc: 'Restores all packages in this project',
+      async execute() {
+        await take.shell('yarn', opts.server);
+      }
+    },
+    'lint': {
+      async execute() {
+        await take.shell('yarn tslint --project .', opts.server);
+      }
+    },
+    'fix': {
+      async execute() {
+        await take.shell('yarn tslint --project . --fix', opts.server);
+      }
+    },
+    'clean': {
+      async execute() {
+        await take.exec('rm -rf', paths.dist);
+        await take.exec('rm -rf', paths.serverDist);
+      }
+    }
+  }
+}
