@@ -2,7 +2,9 @@ import { Response, Router } from 'express';
 
 export abstract class Controller {
   public router(): Router {
-    const router = Router();
+    const router = Router({
+      mergeParams: true,
+    });
 
     // link routes from implementing class
     this.linkRoutes(router);
