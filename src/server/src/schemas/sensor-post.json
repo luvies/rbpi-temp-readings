@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "luvies/rbpi-temp-readings/sensor-post",
+  "title": "Sensor - POST",
+  "description": "A sensor",
+  "type": "object",
+  "properties": {
+    "serialNum": {
+      "description": "The serial number of the sensor.",
+      "type": "string"
+    },
+    "desc": {
+      "description": "The description of the sensor.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "serialNum",
+    "desc"
+  ]
+}

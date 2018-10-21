@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "luvies/rbpi-temp-readings/readings-post",
+  "title": "Reading - POST",
+  "description": "A single reading from a sensor",
+  "type": "object",
+  "properties": {
+    "value": {
+      "description": "The value of the reading.",
+      "type": "number"
+    },
+    "takenAt": {
+      "description": "When the reading was taken.",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "value",
+    "takenAt"
+  ]
+}

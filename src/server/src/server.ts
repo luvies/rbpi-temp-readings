@@ -11,7 +11,7 @@ import { createConnection } from 'typeorm';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { Reading } from './models/reading';
 import { Sensor } from './models/sensor';
-import { ApiController } from './routes/ApiController';
+import { ApiController } from './routes/api-controller';
 
 const staticDir = 'static';
 

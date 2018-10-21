@@ -32,5 +32,10 @@
       "check-type-operator",
       "check-preblock"
     ]
+  },
+  "linterOptions": {
+    "exclude": [
+      "src/**/*.json"
+    ]
   }
 }
