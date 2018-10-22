@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A webserver and database schema for reading/storing temperature readings",
   "main": "index.js",
-  "repository": "https://github.com/luvies/rbpi-temp-readings",
+  "repository": "luvies/rbpi-temp-readings",
   "author": "luvies",
   "license": "MIT",
   "devDependencies": {
