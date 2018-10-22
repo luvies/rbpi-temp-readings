@@ -56,7 +56,7 @@ export class NodeServer {
     } catch (err) {
       console.log('Failed to connect, waiting to retry...');
 
-      // wait 5 seconds to retry
+      // wait a bit to retry
       await new Promise(resolve => setTimeout(resolve, 10000));
 
       // try again without catching
