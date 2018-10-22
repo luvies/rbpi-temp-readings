@@ -1,6 +1,6 @@
 import { Router } from 'express';
+import { Controller } from 'express-ts-base';
 import { SensorsController } from './api/sensors-controller';
-import { Controller } from './controller';
 
 export class ApiController extends Controller {
   protected linkRoutes(router: Router): void {

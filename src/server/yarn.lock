@@ -467,6 +467,20 @@ execa@^0.7.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
+express-ts-base@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/express-ts-base/-/express-ts-base-1.0.1.tgz#2b892675da59b24e11db1843d20974205bad8319"
+  integrity sha512-qyaUgsNc36R0llRQ+hrt3KI+E9Yhj3ASgBoMxzWEncak4rxwYkPgZnTK4w/ihsDn9XOq8C2sfj3e1lLXnxRcAA==
+  dependencies:
+    body-parser "^1.18.3"
+    compression "^1.7.3"
+    cookie-parser "^1.4.3"
+    dateformat "^3.0.3"
+    express "^4.16.4"
+    serve-favicon "^2.5.0"
+    statuses "^1.5.0"
+    tslib "^1.9.3"
+
 express@^4.16.4:
   version "4.16.4"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.4.tgz#fddef61926109e24c515ea97fd2f1bdbf62df12e"

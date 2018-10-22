@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
+import { Controller } from 'express-ts-base';
 import { Sensor } from '../../models/sensor';
 import { validator } from '../../validator';
-import { Controller } from '../controller';
 import { ReadingsController } from './sensors/readings-controller';
 
 export class SensorsController extends Controller {
@@ -23,7 +23,7 @@ export class SensorsController extends Controller {
       const sensor = await Sensor.findOneOrFail(req.params.sensorId);
       res.json(sensor);
     } catch (err) {
-      this.errorResp(res, 404);
+      this.errorJsonResp(res, 404);
     }
   }
 
@@ -34,12 +34,12 @@ export class SensorsController extends Controller {
         await Sensor.insert(sensor);
         res.sendStatus(201);
       } catch (err) {
-        this.errorResp(res, 500, {
+        this.errorJsonResp(res, 500, {
           msg: err.message,
         });
       }
     } else {
-      this.errorResp(res, 400, {
+      this.errorJsonResp(res, 400, {
         msg: 'Invalid sensor object',
       });
     }
@@ -52,12 +52,12 @@ export class SensorsController extends Controller {
         await Sensor.update(req.params.sensorId, sensor);
         res.sendStatus(200);
       } catch (err) {
-        this.errorResp(res, 500, {
+        this.errorJsonResp(res, 500, {
           msg: err.message,
         });
       }
     } else {
-      this.errorResp(res, 400, {
+      this.errorJsonResp(res, 400, {
         msg: 'Invalid sensor object',
       });
     }

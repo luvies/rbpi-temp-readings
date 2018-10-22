@@ -1,9 +1,9 @@
 import dateFormat from 'dateformat';
 import { NextFunction, Request, Response, Router } from 'express';
+import { Controller } from 'express-ts-base';
 import { Reading } from '../../../models/reading';
 import { Sensor } from '../../../models/sensor';
 import { validator } from '../../../validator';
-import { Controller } from '../../controller';
 
 export class ReadingsController extends Controller {
   protected linkRoutes(router: Router): void {
@@ -18,7 +18,7 @@ export class ReadingsController extends Controller {
       (res.locals = res.locals || {}).readingsSensor = sensor;
       next();
     } catch (err) {
-      this.errorResp(res, 404);
+      this.errorJsonResp(res, 404);
     }
   }
 
@@ -34,7 +34,7 @@ export class ReadingsController extends Controller {
     if (req.query.after) {
       const after = new Date(req.query.after);
       if (isNaN(after.getTime())) {
-        this.errorResp(res, 400, {
+        this.errorJsonResp(res, 400, {
           msg: 'Query param \'after\' not a valid date',
         });
         return;
@@ -48,7 +48,7 @@ export class ReadingsController extends Controller {
     if (req.query.before) {
       const before = new Date(req.query.before);
       if (isNaN(before.getTime())) {
-        this.errorResp(res, 400, {
+        this.errorJsonResp(res, 400, {
           msg: 'Query param \'before\' not a valid date',
         });
         return;
@@ -73,12 +73,12 @@ export class ReadingsController extends Controller {
         });
         res.sendStatus(201);
       } catch (err) {
-        this.errorResp(res, 500, {
+        this.errorJsonResp(res, 500, {
           msg: err.message,
         });
       }
     } else {
-      this.errorResp(res, 400, {
+      this.errorJsonResp(res, 400, {
         msg: 'Invalid reading object',
       });
     }
