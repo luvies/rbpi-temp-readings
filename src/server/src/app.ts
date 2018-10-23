@@ -1,8 +1,10 @@
 import { NodeServer } from 'express-ts-base';
 import logger from 'morgan';
 import { join } from 'path';
-import { createConnection } from 'typeorm';
+import { ConnectionOptions, createConnection } from 'typeorm';
+import { BaseConnectionOptions } from 'typeorm/connection/BaseConnectionOptions';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions';
 import { Reading } from './models/reading';
 import { Sensor } from './models/sensor';
 import { ApiController } from './routes/api-controller';
@@ -19,13 +21,9 @@ export class AppServer extends NodeServer {
   }
 
   public async mainConfigure() {
-    const conn: MysqlConnectionOptions = {
-      type: 'mariadb',
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_SCHEMA,
+    const dbMode = process.env.DB_MODE;
+    let conn: ConnectionOptions;
+    const defaults: Partial<BaseConnectionOptions> = {
       entities: [
         Sensor,
         Reading,
@@ -33,6 +31,14 @@ export class AppServer extends NodeServer {
       synchronize: true,
       logging: false,
     };
+    switch (dbMode) {
+      case 'mariadb':
+        conn = this.getConnMariaDb(defaults);
+        break;
+      default:
+        conn = this.getConnSqlite(defaults);
+        break;
+    }
 
     try {
       await createConnection(conn);
@@ -48,5 +54,25 @@ export class AppServer extends NodeServer {
 
     // load api routes
     this.express.use('/api/v1', new ApiController().router());
+  }
+
+  private getConnMariaDb(defaults: Partial<BaseConnectionOptions>): MysqlConnectionOptions {
+    return {
+      ...defaults,
+      type: 'mariadb',
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_SCHEMA,
+    };
+  }
+
+  private getConnSqlite(defaults: Partial<BaseConnectionOptions>): SqliteConnectionOptions {
+    return {
+      ...defaults,
+      type: 'sqlite',
+      database: 'db/readings.db',
+    };
   }
 }
