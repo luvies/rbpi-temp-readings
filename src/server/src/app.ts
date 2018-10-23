@@ -72,7 +72,7 @@ export class AppServer extends NodeServer {
     return {
       ...defaults,
       type: 'sqlite',
-      database: 'db/readings.db',
+      database: process.env.DB_FILE_PATH || 'db/readings.db',
     };
   }
 }

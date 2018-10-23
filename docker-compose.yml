@@ -5,6 +5,8 @@ services:
     build: .
     ports:
       - "80:80"
+    environment:
+      - "DB_FILE_PATH=/app/db/test.db"
     volumes:
       - "./untracked/test-db:/app/db"
   #   environment:
