@@ -3,7 +3,7 @@ WORKDIR /app
 EXPOSE 80
 ENV PORT=80
 
-FROM arm32v6/node:10.12 as build
+FROM arm32v6/node:10.12-alpine as build
 RUN yarn global add @luvies/take@0.0.9
 WORKDIR /build
 COPY . .
