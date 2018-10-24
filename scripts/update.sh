@@ -8,7 +8,7 @@ echo "Fetching latest release..."
 LATEST=$(curl -sL $URL_LATEST)
 EXTRACT_JS="const fs = require('fs'); \
     const assets = JSON.parse(fs.readFileSync(0, 'utf-8')).assets; \
-    assets[0] ? console.log(assets[0].browser_download_url) : process.exitCode = 1;"
+    assets[0] ? process.stdout.write(assets[0].browser_download_url) : process.exitCode = 1;"
 DOWNLOAD_URL=$(echo "$LATEST" | node -e "$EXTRACT_JS")
 
 if [ $? -eq 0 ]; then
