@@ -3,8 +3,9 @@ import logger from 'morgan';
 import { join } from 'path';
 import { ConnectionOptions, createConnection } from 'typeorm';
 import { BaseConnectionOptions } from 'typeorm/connection/BaseConnectionOptions';
-import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
-import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions';
+// import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+// import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions';
+import { SqljsConnectionOptions } from 'typeorm/driver/sqljs/SqljsConnectionOptions';
 import { Reading } from './models/reading';
 import { Sensor } from './models/sensor';
 import { ApiController } from './routes/api-controller';
@@ -32,11 +33,14 @@ export class AppServer extends NodeServer {
       logging: false,
     };
     switch (dbMode) {
-      case 'mariadb':
-        conn = this.getConnMariaDb(defaults);
-        break;
+      // case 'mariadb':
+      //   conn = this.getConnMariaDb(defaults);
+      //   break;
+      // case 'sqlite':
+      //   conn = this.getConnSqlite(defaults);
+      //   break;
       default:
-        conn = this.getConnSqlite(defaults);
+        conn = this.getConnSqljs(defaults);
         break;
     }
 
@@ -56,23 +60,32 @@ export class AppServer extends NodeServer {
     this.express.use('/api/v1', new ApiController().router());
   }
 
-  private getConnMariaDb(defaults: Partial<BaseConnectionOptions>): MysqlConnectionOptions {
-    return {
-      ...defaults,
-      type: 'mariadb',
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_SCHEMA,
-    };
-  }
+  // private getConnMariaDb(defaults: Partial<BaseConnectionOptions>): MysqlConnectionOptions {
+  //   return {
+  //     ...defaults,
+  //     type: 'mariadb',
+  //     host: process.env.DB_HOST,
+  //     port: Number(process.env.DB_PORT),
+  //     username: process.env.DB_USERNAME,
+  //     password: process.env.DB_PASSWORD,
+  //     database: process.env.DB_SCHEMA,
+  //   };
+  // }
 
-  private getConnSqlite(defaults: Partial<BaseConnectionOptions>): SqliteConnectionOptions {
+  // private getConnSqlite(defaults: Partial<BaseConnectionOptions>): SqliteConnectionOptions {
+  //   return {
+  //     ...defaults,
+  //     type: 'sqlite',
+  //     database: process.env.DB_FILE_PATH || 'db/readings.db',
+  //   };
+  // }
+
+  private getConnSqljs(defaults: Partial<BaseConnectionOptions>): SqljsConnectionOptions {
     return {
       ...defaults,
-      type: 'sqlite',
-      database: process.env.DB_FILE_PATH || 'db/readings.db',
+      type: 'sqljs',
+      location: process.env.DB_FILE_PATH || 'db/readings.db',
+      autoSave: true,
     };
   }
 }

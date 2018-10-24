@@ -69,6 +69,21 @@ module.exports = (take) => {
         await take.exec('rm -rf', paths.dist);
         await take.exec('rm -rf', paths.serverDist);
       }
+    },
+    'pack': {
+      deps: [
+        ':clean'
+      ],
+      async execute() {
+        await take.shell('yarn webpack --mode=production', opts.server);
+        await take.exec('mkdir -p dist');
+        await take.exec(`cp -f ${paths.serverDist}/* dist/`);
+        await take.shell('zip -q rbpi-readings-server *', {
+          spawn: {
+            cwd: 'dist'
+          }
+        });
+      }
     }
   }
 }
