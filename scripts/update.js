@@ -86,7 +86,7 @@ async function main() {
     await childExec(`rm -rf ${output}`);
     console.log('Done!');
   } else {
-    console.error('Latest release does not have any assets, unable to download latest version...');
+    console.error('Latest release does not have any assets, unable to download latest version');
   }
 }
 
