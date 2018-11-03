@@ -29,15 +29,15 @@ export class Validator {
     };
   }
 
-  public validateReadingPost(obj: unknown): obj is Models.Api.Post.Reading {
+  public validateReadingPost(obj: unknown): obj is Api.Reading.Post {
     return this.validators.reading.post(obj) as boolean;
   }
 
-  public validateSensorPatch(obj: unknown): obj is Models.Api.Patch.Sensor {
+  public validateSensorPatch(obj: unknown): obj is Api.Sensor.Patch {
     return this.validators.sensor.patch(obj) as boolean;
   }
 
-  public validateSensorPost(obj: unknown): obj is Models.Api.Post.Sensor {
+  public validateSensorPost(obj: unknown): obj is Api.Sensor.Post {
     return this.validators.sensor.post(obj) as boolean;
   }
 }

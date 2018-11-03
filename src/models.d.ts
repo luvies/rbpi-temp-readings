@@ -1,36 +1,29 @@
-declare namespace Models {
-  export namespace Api {
-    interface ReadingBase {
-      value: number;
-      takenAt: string;
-    }
-
-    interface SensorBase {
+declare namespace Api {
+  namespace Sensor {
+    interface Base {
       serialNum: string;
       desc: string;
     }
 
-    export namespace Get {
-      export interface Reading extends ReadingBase {
-        id: number;
-      }
-
-      export interface Sensor extends SensorBase {
-        id: number;
-      }
+    interface Get extends Base {
+      id: number;
     }
 
-    export namespace Post {
-      export interface Reading extends ReadingBase {
-      }
+    interface Post extends Base { }
 
-      export interface Sensor extends SensorBase {
-      }
+    interface Patch extends Partial<Base> { }
+  }
+
+  namespace Reading {
+    interface Base {
+      value: number;
+      takenAt: string;
     }
 
-    export namespace Patch {
-      export interface Sensor extends Partial<SensorBase> {
-      }
+    interface Get extends Base {
+      id: number;
     }
+
+    interface Post extends Base { }
   }
 }
