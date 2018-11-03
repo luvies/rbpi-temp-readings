@@ -2,6 +2,7 @@ import Sensor from 'components/sensor/Sensor';
 import React, { Component } from 'react';
 import { fetchReadings, fetchSensors, updateSensor } from 'src/data';
 import styles from './App.scss';
+import LatestInfo from './LatestInfo';
 
 interface SensorInfo {
   info: Api.Sensor.Get;
@@ -31,19 +32,26 @@ class App extends Component<{}, State> {
         {this.state.error ?
           <p className={styles.error}>{this.state.error.text}: {this.state.error.message}</p>
           :
-          <ul className={styles.list}>
-            {this.state.sensors.map(sensor => {
-              return (
-                <li key={sensor.info.id} className={styles.listItem}>
-                  <Sensor
-                    sensor={sensor.info}
-                    readings={sensor.readings}
-                    onUpdateDesc={this.handleSensorUpdate}
-                  />
-                </li>
-              );
-            })}
-          </ul>
+          <>
+            <div className={styles.latest}>
+              {this.state.sensors.map(sensor => {
+                return <LatestInfo key={sensor.info.id} sensor={sensor.info} readings={sensor.readings} />;
+              })}
+            </div>
+            <ul className={styles.list}>
+              {this.state.sensors.map(sensor => {
+                return (
+                  <li key={sensor.info.id} className={styles.listItem}>
+                    <Sensor
+                      sensor={sensor.info}
+                      readings={sensor.readings}
+                      onUpdateDesc={this.handleSensorUpdate}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </>
         }
       </div>
     );

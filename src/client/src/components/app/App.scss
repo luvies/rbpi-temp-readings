@@ -1,6 +1,5 @@
 :local {
   .container {
-    text-align: center;
     padding: 15px;
   }
 
@@ -9,6 +8,10 @@
     margin: 20px 20px;
     padding: 15px;
     border-radius: 5px;
+  }
+
+  .latest {
+    padding: 10px;
   }
 
   $list-item-spacing: 15px;
