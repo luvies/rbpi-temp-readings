@@ -1,36 +1,33 @@
 :local {
-  .app {
+  .container {
     text-align: center;
+    padding: 15px;
   }
 
-  .logo {
-    animation: logo-spin infinite 20s linear;
-    height: 40vmin;
+  .error {
+    background: #ff000049;
+    margin: 20px 20px;
+    padding: 15px;
+    border-radius: 5px;
   }
 
-  .header {
-    background-color: #282c34;
-    min-height: 100vh;
+  $list-item-spacing: 15px;
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-left: -$list-item-spacing;
+    position: relative;
+    flex-wrap: wrap;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
   }
 
-  .link {
-    color: #61dafb;
-  }
-
-  $logo-spin: unquote(':local(logo-spin)');
-  @keyframes #{$logo-spin} {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
+  .listItem {
+    position: relative;
+    margin-bottom: $list-item-spacing;
+    padding-left: $list-item-spacing;
+    max-width: 100%;
   }
 }
