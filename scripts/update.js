@@ -79,6 +79,7 @@ async function main() {
       childExec(`mkdir -p ${baseServer}`)
     ])
     console.log('Installing latest server and cleaning up...');
+    await childExec(`rm -rf ${baseServer}/*`);
     await Promise.all([
       childExec(`cp -rf ${output}/* ${baseServer}/`),
       childExec(`rm -rf ${output}.zip`)

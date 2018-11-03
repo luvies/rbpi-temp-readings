@@ -18,6 +18,7 @@ if [ $? -eq 0 ]; then
     unzip -oq $OUTPUT -d $OUTPUT
     mkdir -p $BASE_SERVER
     echo "Installing latest server..."
+    rm -rf $BASE_SERVER/*
     cp -rf $OUTPUT/* $BASE_SERVER/
     echo "Cleaning up..."
     rm -rf $OUTPUT.zip $OUTPUT
