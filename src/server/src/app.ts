@@ -50,7 +50,8 @@ export class AppServer extends NodeServer {
       console.log('Failed to connect, waiting to retry...');
 
       // wait a bit to retry
-      await new Promise(resolve => setTimeout(resolve, 10000));
+      const retryWait = 10000; // 10 secs
+      await new Promise(resolve => setTimeout(resolve, retryWait));
 
       // try again without catching
       await createConnection(conn);

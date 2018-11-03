@@ -1,25 +1,41 @@
 {
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
+    /*
+      Interfaces that describe objects use normal names,
+      Interfaces that are for classes to implement are prefixed with `I`.
+      This allows distinction between intention.
+    */
     "interface-name": false,
+    // Enforces good standard.
     "semicolon": true,
+    // Not useful.
     "object-literal-sort-keys": false,
-    "no-console": false,
+    // Allow for debugging, but make sure we know that they exists so we can remove them later.
+    "no-console": {
+      "severity": "warn"
+    },
+    // Allows hot-reloading without needing to fix import order first.
     "ordered-imports": {
       "severity": "warn"
     },
-    "no-unused-variable": false, // use compiler warnings
+    // Allows cleaner notation.
+    "jsx-boolean-value": false,
+    // Enforce spacing and allow fixing.
     "indent": [
       true,
       "spaces",
       2
     ],
+    // Enforce trailing commas on certain multiline statements.
+    // Reduces some git diff clutter.
     "trailing-comma": [
       true,
       {
         "multiline": "always"
       }
     ],
+    // Enforce whitespace style.
     "whitespace": [
       true,
       "check-branch",
@@ -31,7 +47,64 @@
       "check-type",
       "check-type-operator",
       "check-preblock"
-    ]
+    ],
+    // Enforce quotemark style.
+    // Use double for JSX since it mimics HTML.
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
+    // Prevent unnecessarily verbose code.
+    // This still allows `return await ...` if it is surrounded by a try-catch block.
+    "no-return-await": true,
+    // Prevent useless type assertions.
+    "no-unnecessary-type-assertion": true,
+    // Ensure that we don't accidentally await a non-promise.
+    "await-promise": true,
+    // Prevent unclear syntax.
+    "ban-comma-operator": true,
+    // Make sure we handle all promises properly.
+    // Even if handler functions aren't completely covered by this, it will improve error traces
+    "no-floating-promises": true,
+    // Prevent function misuse.
+    "no-void-expression": true,
+    // Keep style consistent and modern.
+    "prefer-object-spread": true,
+    // Ensure newline at end of file and LF for linebreaks.
+    // The .editorconfig does ensure these already, but these will enforce them regardless of whether the
+    // editor supports it.
+    "eofline": true,
+    "linebreak-style": [
+      true,
+      "LF"
+    ],
+    // Keep whitespace clean.
+    "no-irregular-whitespace": true,
+    // Enforce bracket style.
+    "one-line": [
+      true,
+      "check-catch",
+      "check-finally",
+      "check-else",
+      "check-open-brace",
+      "check-whitespace"
+    ],
+    // Use cleaner and more readable style.
+    "prefer-template": true,
+    // Keep function returns consistent and intention obvious.
+    "return-undefined": true,
+    // Prevent verbose type definitions.
+    "no-inferrable-types": true,
+    // Enforce member access on all class members
+    "member-access": [
+      true,
+      "check-accessor",
+      "check-constructor",
+      "check-parameter-property"
+    ],
+    // Prevent undocumented numbers from being used
+    "no-magic-numbers": true
   },
   "linterOptions": {
     "exclude": [

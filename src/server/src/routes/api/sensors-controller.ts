@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { Controller } from 'express-ts-base';
+import { statuses } from '../../consts';
 import { Sensor } from '../../models/sensor';
 import { validator } from '../../validator';
 import { ReadingsController } from './sensors/readings-controller';
@@ -23,7 +24,7 @@ export class SensorsController extends Controller {
       const sensor = await Sensor.findOneOrFail(req.params.sensorId);
       res.json(sensor);
     } catch (err) {
-      this.errorJsonResp(res, 404);
+      this.errorJsonResp(res, statuses.NOT_FOUND);
     }
   }
 
@@ -32,14 +33,14 @@ export class SensorsController extends Controller {
     if (validator.validateSensorPost(sensor)) {
       try {
         await Sensor.insert(sensor);
-        res.sendStatus(201);
+        res.sendStatus(statuses.CREATED);
       } catch (err) {
-        this.errorJsonResp(res, 500, {
+        this.errorJsonResp(res, statuses.SERVER_ERROR, {
           msg: err.message,
         });
       }
     } else {
-      this.errorJsonResp(res, 400, {
+      this.errorJsonResp(res, statuses.CLIENT_ERROR, {
         msg: 'Invalid sensor object',
       });
     }
@@ -50,14 +51,14 @@ export class SensorsController extends Controller {
     if (validator.validateSensorPatch(sensor)) {
       try {
         await Sensor.update(req.params.sensorId, sensor);
-        res.sendStatus(200);
+        res.sendStatus(statuses.OK);
       } catch (err) {
-        this.errorJsonResp(res, 500, {
+        this.errorJsonResp(res, statuses.SERVER_ERROR, {
           msg: err.message,
         });
       }
     } else {
-      this.errorJsonResp(res, 400, {
+      this.errorJsonResp(res, statuses.CLIENT_ERROR, {
         msg: 'Invalid sensor object',
       });
     }

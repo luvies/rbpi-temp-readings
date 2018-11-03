@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "build/dist",
+    "module": "esnext",
+    "target": "es2017",
+    "lib": ["es2017", "dom"],
+    "allowJs": true,
+    "jsx": "preserve",
+    "rootDir": "src",
+		"paths": {
+			"components/*": [
+				"src/components/*"
+			],
+			"@/*": [
+				"src/*"
+			],
+    }
+  },
+  "include": [
+    "src",
+    "../models.d.ts"
+  ]
+}
