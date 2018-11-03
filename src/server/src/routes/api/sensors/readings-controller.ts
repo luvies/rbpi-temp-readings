@@ -29,7 +29,8 @@ export class ReadingsController extends Controller {
     // init query
     let search = Reading
       .createQueryBuilder()
-      .where('reading_sen_id = :id', { id: sensor.id });
+      .where('reading_sen_id = :id', { id: sensor.id })
+      .orderBy('reading_taken_at', 'ASC');
 
     // if after query exists, use it
     if (req.query.after) {
