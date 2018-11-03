@@ -1,3 +1,4 @@
+import SensorName from 'components/generic/SensorName';
 import React, { Component, FormEvent } from 'react';
 import Graph from './Graph';
 import styles from './Sensor.scss';
@@ -31,7 +32,9 @@ class Sensor extends Component<Props, State> {
     return (
       <div className={styles.container}>
         <div className={styles.info}>
-          <h1 className={styles.header}>{this.props.sensor.serialNum}</h1>
+          <h1 className={styles.header}>
+            <SensorName sensor={this.props.sensor} />
+          </h1>
           <form className={styles.form} onSubmit={this.handleSubmit}>
             <input
               className={styles.descInput}
