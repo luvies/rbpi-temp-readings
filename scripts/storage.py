@@ -51,10 +51,12 @@ class Sensor:
         resp.raise_for_status()
         self._desc = value
 
-    def push_reading(self, value):
+    def push_reading(self, value, takenAt=None):
+        if takenAt is None:
+            takenAt = datetime.datetime.now()
         payload = {
             "value": value,
-            "takenAt": datetime.datetime.now().isoformat() + "Z"
+            "takenAt": takenAt.isoformat() + "Z"
         }
         resp = requests.post("{}/{}/{}".format(SENSORS_URL,
                                                self._id, READINGS_ENDPOINT), json=payload)
