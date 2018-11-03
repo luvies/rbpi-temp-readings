@@ -1,0 +1,3 @@
+# prevent scripts & config from being picked up by linguist
+src/client/config/* linguist-detectable=false
+src/client/scripts/* linguist-detectable=false
