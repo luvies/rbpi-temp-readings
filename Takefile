@@ -7,8 +7,8 @@ module.exports = (take) => {
     distStatic: 'src/dist/static',
     server: 'src/server',
     serverDist: 'src/server/dist',
-    web: 'src/web',
-    webDist: 'src/web/build',
+    client: 'src/client',
+    clientDist: 'src/client/build',
     wpDist: 'dist',
     wpDistStatic: 'dist/static'
   };
@@ -18,9 +18,9 @@ module.exports = (take) => {
         cwd: paths.server
       }
     },
-    web: {
+    client: {
       spawn: {
-        cwd: paths.web
+        cwd: paths.client
       }
     },
   };
@@ -37,7 +37,7 @@ module.exports = (take) => {
     'build': {
       deps: [
         'server',
-        "web"
+        'client'
       ],
       parallelDeps: true,
       children: {
@@ -52,16 +52,16 @@ module.exports = (take) => {
             });
           }
         },
-        'web': {
+        'client': {
           async execute() {
-            await take.shell('yarn build', opts.web);
+            await take.shell('yarn build', opts.client);
           }
         }
       },
       async execute() {
         await take.exec('mkdir -p', paths.dist);
         await take.exec('cp -rf', `${paths.serverDist}/`, paths.dist);
-        await take.exec('cp -rf', `${paths.webDist}/`, paths.distStatic);
+        await take.exec('cp -rf', `${paths.clientDist}/`, paths.distStatic);
         take.log('Merged dists');
       }
     },
@@ -69,39 +69,39 @@ module.exports = (take) => {
       desc: 'Restores all packages in this project',
       async execute() {
         await take.shell('yarn', opts.server);
-        await take.shell('yarn', opts.web);
+        await take.shell('yarn', opts.client);
       }
     },
     'lint': {
       async execute() {
         await take.shell('yarn tslint --project .', opts.server);
-        await take.shell('yarn tslint --project .', opts.web);
+        await take.shell('yarn tslint --project .', opts.client);
       }
     },
     'fix': {
       async execute() {
         await take.shell('yarn tslint --project . --fix', opts.server);
-        await take.shell('yarn tslint --project . --fix', opts.web);
+        await take.shell('yarn tslint --project . --fix', opts.client);
       }
     },
     'clean': {
       async execute() {
         await take.exec('rm -rf', paths.dist);
         await take.exec('rm -rf', paths.serverDist);
-        await take.exec('rm -rf', paths.webDist);
+        await take.exec('rm -rf', paths.clientDist);
         await take.exec('rm -rf', paths.wpDist);
       }
     },
     'pack': {
       deps: [
         ':clean',
-        ':build:web'
+        ':build:client'
       ],
       async execute() {
         await take.shell('yarn webpack --mode=production', opts.server);
         await take.exec(`mkdir -p ${paths.wpDist} ${paths.wpDistStatic}`);
         await take.exec(`cp -f ${paths.serverDist}/* ${paths.wpDist}/`);
-        await take.exec(`cp -rf ${paths.webDist}/* ${paths.wpDistStatic}/`);
+        await take.exec(`cp -rf ${paths.clientDist}/* ${paths.wpDistStatic}/`);
         await take.shell('zip -qr rbpi-readings-server *', {
           spawn: {
             cwd: 'dist'
