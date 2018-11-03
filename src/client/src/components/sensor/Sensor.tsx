@@ -1,11 +1,11 @@
 import React, { Component, FormEvent } from 'react';
-import { updateSensor } from 'src/data';
 import Graph from './Graph';
 import styles from './Sensor.scss';
 
 export interface Props {
   sensor: Api.Sensor.Get;
-  onUpdate: () => void;
+  readings: Api.Reading.Get[];
+  onUpdateDesc: (id: number, desc: string) => void;
 }
 
 interface State {
@@ -19,10 +19,11 @@ class Sensor extends Component<Props, State> {
   public propDesc = this.props.sensor.desc;
 
   public componentDidUpdate() {
-    if (this.props.sensor.desc !== this.propDesc && this.state.desc === this.propDesc) {
+    if (this.props.sensor.desc !== this.propDesc) {
       this.setState({
         desc: this.props.sensor.desc,
       });
+      this.propDesc = this.props.sensor.desc;
     }
   }
 
@@ -43,7 +44,7 @@ class Sensor extends Component<Props, State> {
         </div>
         <div className={styles.canvasContainer}>
           <div className={styles.canvasInner}>
-            <Graph sensorId={this.props.sensor.id} />
+            <Graph readings={this.props.readings} />
           </div>
         </div>
       </div>
@@ -53,19 +54,9 @@ class Sensor extends Component<Props, State> {
   private handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      // update sensor on server
-      await updateSensor(this.props.sensor.id, {
-        desc: this.state.desc,
-      });
-
-      // if we did it, fire the update event
-      if (this.props.onUpdate) {
-        this.props.onUpdate();
-      }
-    } catch (err) {
-      // tslint:disable-next-line:no-console
-      console.error(err);
+    // fire the update handler
+    if (this.props.onUpdateDesc) {
+      this.props.onUpdateDesc(this.props.sensor.id, this.state.desc);
     }
   }
 

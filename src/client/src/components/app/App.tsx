@@ -1,11 +1,19 @@
 import Sensor from 'components/sensor/Sensor';
 import React, { Component } from 'react';
-import { fetchSensors } from 'src/data';
+import { fetchReadings, fetchSensors, updateSensor } from 'src/data';
 import styles from './App.scss';
 
+interface SensorInfo {
+  info: Api.Sensor.Get;
+  readings: Api.Reading.Get[];
+}
+
 interface State {
-  sensors: Api.Sensor.Get[];
-  error?: string;
+  sensors: SensorInfo[];
+  error?: {
+    text: string,
+    message: string,
+  };
 }
 
 class App extends Component<{}, State> {
@@ -21,13 +29,17 @@ class App extends Component<{}, State> {
     return (
       <div className={styles.container}>
         {this.state.error ?
-          <p className={styles.error}>Error fetching sensors: {this.state.error}</p>
+          <p className={styles.error}>{this.state.error.text}: {this.state.error.message}</p>
           :
           <ul className={styles.list}>
             {this.state.sensors.map(sensor => {
               return (
-                <li key={sensor.id} className={styles.listItem}>
-                  <Sensor sensor={sensor} onUpdate={this.handleSensorUpdate} />
+                <li key={sensor.info.id} className={styles.listItem}>
+                  <Sensor
+                    sensor={sensor.info}
+                    readings={sensor.readings}
+                    onUpdateDesc={this.handleSensorUpdate}
+                  />
                 </li>
               );
             })}
@@ -39,19 +51,52 @@ class App extends Component<{}, State> {
 
   private async updateSensors() {
     try {
+      // state update object
+      const update: {
+        sensors: SensorInfo[],
+      } = {
+        sensors: [],
+      };
+
+      // fetch sensor data
+      const sensors = await fetchSensors();
+      for (const sensor of sensors) {
+        update.sensors.push({
+          info: sensor,
+          readings: await fetchReadings(sensor.id),
+        });
+      }
+
+      // apply state
+      this.setState(update);
+    } catch (err) {
+      // tslint:disable-next-line:no-console
+      console.error(err);
       this.setState({
-        sensors: await fetchSensors(),
+        error: {
+          text: 'Error fetching sensor data',
+          message: err.message,
+        },
+      });
+    }
+  }
+
+  private handleSensorUpdate = async (id: number, desc: string) => {
+    try {
+      // update sensor on server
+      await updateSensor(id, {
+        desc,
       });
     } catch (err) {
       // tslint:disable-next-line:no-console
       console.error(err);
       this.setState({
-        error: err.message,
+        error: {
+          text: 'Error updating sensor info',
+          message: err.message,
+        },
       });
     }
-  }
-
-  private handleSensorUpdate = async () => {
     await this.updateSensors();
   }
 }

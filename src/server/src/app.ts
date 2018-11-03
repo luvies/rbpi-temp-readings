@@ -64,6 +64,7 @@ export class AppServer extends NodeServer {
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       res.setHeader('Access-Control-Allow-Methods', '*');
+      res.setHeader('Access-Control-Allow-Headers', '*');
       next();
     });
     this.express.use('/api/v1', new ApiController().router());

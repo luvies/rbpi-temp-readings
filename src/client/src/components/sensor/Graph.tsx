@@ -1,23 +1,13 @@
 import { Chart } from 'chart.js';
 import React, { Component, createRef, RefObject } from 'react';
-import { fetchReadings } from 'src/data';
 import styles from './Graph.scss';
 
 export interface Props {
-  sensorId: number;
-}
-
-interface State {
   readings: Api.Reading.Get[];
 }
 
-class Graph extends Component<Props, State> {
-  public state: State = {
-    readings: [],
-  };
-
+class Graph extends Component<Props> {
   private canvasRef: RefObject<HTMLCanvasElement> = createRef();
-  private currentSensorId = this.props.sensorId;
   private chart!: Chart;
 
   public async componentDidMount() {
@@ -54,27 +44,11 @@ class Graph extends Component<Props, State> {
       },
     );
 
-    // update the readings
-    await this.updateReadings();
+    this.applyReadings();
   }
 
-  public async componentDidUpdate() {
-    // update readings if we have a new sensor ID
-    if (this.props.sensorId !== this.currentSensorId) {
-      await this.updateReadings();
-    }
-
-    // update chart display with latest state
-    this.chart.data.labels = this.state.readings.map(v => {
-      const time = new Date(v.takenAt);
-      if (process.env.NODE_ENV === 'development') {
-        return [time.toLocaleDateString(), time.toLocaleTimeString()];
-      } else {
-        return time.toLocaleTimeString();
-      }
-    });
-    this.chart.data.datasets![0].data = this.state.readings.map(v => v.value);
-    this.chart.update();
+  public componentDidUpdate() {
+    this.applyReadings();
   }
 
   public render() {
@@ -83,19 +57,18 @@ class Graph extends Component<Props, State> {
     );
   }
 
-  private async updateReadings() {
-    try {
-      // attempt to fetch the new readings
-      this.setState({
-        readings: await fetchReadings(this.props.sensorId),
-      });
-
-      // if we did fetch them, make sure we don't refetch for every update
-      this.currentSensorId = this.props.sensorId;
-    } catch (err) {
-      // tslint:disable-next-line:no-console
-      console.error(err);
-    }
+  private applyReadings() {
+    // update chart display with latest state
+    this.chart.data.labels = this.props.readings.map(v => {
+      const time = new Date(v.takenAt);
+      if (process.env.NODE_ENV === 'development') {
+        return [time.toLocaleDateString(), time.toLocaleTimeString()];
+      } else {
+        return time.toLocaleTimeString();
+      }
+    });
+    this.chart.data.datasets![0].data = this.props.readings.map(v => v.value);
+    this.chart.update();
   }
 }
 
