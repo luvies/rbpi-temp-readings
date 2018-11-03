@@ -58,6 +58,14 @@ export class AppServer extends NodeServer {
     }
 
     // load api routes
+    this.express.use((req, res, next) => {
+      // since this server isn't meant for production, or even external access,
+      // we can safely expose the API endpoints to any domain
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.setHeader('Access-Control-Allow-Methods', '*');
+      next();
+    });
     this.express.use('/api/v1', new ApiController().router());
   }
 
