@@ -10,7 +10,7 @@ import { Reading } from './models/reading';
 import { Sensor } from './models/sensor';
 import { ApiController } from './routes/api-controller';
 
-const staticDir = 'static';
+const staticDir = 'content';
 
 export class AppServer extends NodeServer {
   public faviconPath = join(__dirname, staticDir, 'favicon.ico');

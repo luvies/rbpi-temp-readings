@@ -22,5 +22,8 @@ module.exports = {
   },
   stats: {
     warnings: false
+  },
+  node: {
+    __dirname: false
   }
 };

@@ -4,13 +4,13 @@ module.exports = (take) => {
 
   const paths = {
     dist: 'src/dist',
-    distStatic: 'src/dist/static',
+    distStatic: 'src/dist/content',
     server: 'src/server',
     serverDist: 'src/server/dist',
     client: 'src/client',
     clientDist: 'src/client/build',
     wpDist: 'dist',
-    wpDistStatic: 'dist/static'
+    wpDistStatic: 'dist/content'
   };
   const opts = {
     server: {
