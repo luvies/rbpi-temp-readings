@@ -95,6 +95,8 @@ module.exports = (take) => {
     'pack': {
       deps: [
         ':clean',
+        ':restore',
+        ':lint',
         ':build:client'
       ],
       async execute() {
