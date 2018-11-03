@@ -19,5 +19,8 @@ module.exports = {
   output: {
     filename: 'rbpi-readings-server.js',
     path: path.resolve(__dirname, 'dist')
+  },
+  stats: {
+    warnings: false
   }
 };
