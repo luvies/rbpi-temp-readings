@@ -1,6 +1,5 @@
 import SensorName from 'components/generic/SensorName';
 import React from 'react';
-import styles from './LatestInfo.scss';
 
 export interface Props {
   sensor: Api.Sensor.Get;
@@ -8,21 +7,25 @@ export interface Props {
 }
 
 function LatestInfo(props: Props) {
+  let value: number | undefined;
+
   if (props.readings.length > 0) {
     const roundLevel = 100;
-    const value = Math.round(props.readings[props.readings.length - 1].value * roundLevel) / roundLevel;
-    return (
-      <p className={styles.info}>
-        Latest readings for <SensorName sensor={props.sensor} />: {value}˚C
-      </p>
-    );
-  } else {
-    return (
-      <p className={styles.info}>
-        No Readings for <SensorName sensor={props.sensor} />
-      </p>
-    );
+    value = Math.round(props.readings[props.readings.length - 1].value * roundLevel) / roundLevel;
   }
+  return (
+    <tr>
+      <td>
+        <SensorName sensor={props.sensor} />
+      </td>
+      {typeof value !== 'undefined' ?
+        <td>{value}˚C</td>
+        :
+        <td>No Readings</td>
+      }
+      <td />
+    </tr>
+  );
 }
 
 export default LatestInfo;

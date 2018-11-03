@@ -34,9 +34,18 @@ class App extends Component<{}, State> {
           :
           <>
             <div className={styles.latest}>
-              {this.state.sensors.map(sensor => {
-                return <LatestInfo key={sensor.info.id} sensor={sensor.info} readings={sensor.readings} />;
-              })}
+              <table className={styles.latestTable}>
+                <thead>
+                  <tr>
+                    <th colSpan={3}>Latest Readings</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.sensors.map(sensor => {
+                    return <LatestInfo key={sensor.info.id} sensor={sensor.info} readings={sensor.readings} />;
+                  })}
+                </tbody>
+              </table>
             </div>
             <ul className={styles.list}>
               {this.state.sensors.map(sensor => {
