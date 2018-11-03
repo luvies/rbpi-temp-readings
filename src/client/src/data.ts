@@ -29,7 +29,6 @@ export function fetchSensors(): Promise<Api.Sensor.Get[]> {
 }
 
 export function fetchReadings(sensor: number): Promise<Api.Reading.Get[]> {
-  // tslint:disable-next-line:no-magic-numbers
   const dayInSecs = 24 * 3600 * 1000;
   const begin = new Date(Date.now() - dayInSecs);
   return doFetch(`${sensorUrl}/${sensor}/${readingPart}?begin=${begin.toISOString()}`);

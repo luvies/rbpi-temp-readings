@@ -68,8 +68,7 @@
       "check-accessor",
       "check-constructor",
       "check-parameter-property"
-    ],
-    "no-magic-numbers": true
+    ]
   },
   "linterOptions": {
     "exclude": [
